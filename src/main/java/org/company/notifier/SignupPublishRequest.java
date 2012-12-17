@@ -14,6 +14,7 @@ import org.company.model.SignupRequest;
 class SignupPublishRequest extends PublishRequest {
 
     private static final String TOPIC_ARN = "arn:aws:sns:eu-west-1:544793272093:notify";
+   
     private static final String SUBJECT = "signup request";
 
     public SignupPublishRequest() {

@@ -24,76 +24,53 @@
 		<!-- Specify the JBoss AS directory to be the JBOSS_HOME environment variable -->
 		<jboss.home>${env.JBOSS_HOME}</jboss.home>
 		<infinispan.version>5.1.1.FINAL</infinispan.version>
-		<junit.version>4.8.2</junit.version>
-		<mockito.version>1.8.5</mockito.version>
-		<version.arquillian_core>1.0.0.CR6</version.arquillian_core>
-		<version.arquillian_drone>1.0.0.CR3</version.arquillian_drone>
+		<version.arquillian_core>1.0.3.Final</version.arquillian_core>
+		<version.arquillian_drone>1.1.0.Final</version.arquillian_drone>
 		<version.arquillian_ajocado>1.0.0.CR2</version.arquillian_ajocado>
-		<version.jsfunit>2.0.0.Beta2</version.jsfunit>
+		<version.jsfunit>2.0.0.Beta3-SNAPSHOT</version.jsfunit>
 		<version.hamcrest>1.2</version.hamcrest>
-		<version.jboss_javaee6_spec>2.0.0.Final</version.jboss_javaee6_spec>
-		<version.jbossas_7>7.0.2.Final</version.jbossas_7>
+		<version.jboss_javaee6_spec>3.0.1.Final</version.jboss_javaee6_spec>
+		<version.jbossas_7>7.1.1.Final</version.jbossas_7>
+		<version.jboss-as-maven-plugin>7.3.Final</version.jboss-as-maven-plugin>
+		<version.org.jboss.bom>1.0.0.Final</version.org.jboss.bom>
+		<!-- Alternatively, comment out the above line, and un-comment the line 
+			below to use version 1.0.0.Final-redhat-1 which is a release certified to 
+			work with JBoss EAP 6. It requires you have access to the JBoss EAP 6 maven 
+			repository. -->
+		<!-- <version.org.jboss.bom>1.0.0.Final-redhat-1</version.org.jboss.bom> -->
+
+		<!-- other plugin versions -->
+		<version.compiler.plugin>2.3.1</version.compiler.plugin>
+		<version.surefire.plugin>2.4.3</version.surefire.plugin>
+		<version.war.plugin>2.1.1</version.war.plugin>
+
 		<version.resteasy>2.0.1.GA</version.resteasy>
 		<version.log4j>1.2.14</version.log4j>
-		<version.slf4j>1.5.10</version.slf4j>
-		<version.jboss_solder>3.1.0.Final</version.jboss_solder>
+		<version.slf4j>1.6.4</version.slf4j>
+		<version.solder>3.1.1.Final</version.solder>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
-			<!-- Define the version of JBoss' Java EE 6 APIs we want to import. Any 
-				dependencies from org.jboss.spec will have their version defined by this 
-				BOM -->
-			<!-- JBoss distributes a complete set of Java EE 6 APIs including a Bill 
-				of Materials (BOM). A BOM specifies the versions of a "stack" (or a collection) 
-				of artifacts. We use this here so that we always get the correct versions 
-				of artifacts. Here we use the jboss-javaee-web-6.0 stack (you can read this 
-				as the JBoss stack of the Java EE Web Profile 6 APIs), and we use version 
-				2.0.0.Beta1 which is the latest release of the stack. You can actually use 
-				this stack with any version of JBoss AS that implements Java EE 6, not just 
-				JBoss AS 7! -->
+
 			<dependency>
-				<groupId>org.jboss.spec</groupId>
-				<artifactId>jboss-javaee6-specs-bom</artifactId>
-				<version>${version.jboss_javaee6_spec}</version>
+				<groupId>org.jboss.bom</groupId>
+				<artifactId>jboss-javaee-6.0-with-tools</artifactId>
+				<version>${version.org.jboss.bom}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			<dependency>
-				<groupId>org.jboss.as</groupId>
-				<artifactId>jboss-as-spec-api</artifactId>
-				<type>pom</type>
-				<version>${version.jbossas_7}</version>
-			</dependency>
-			<dependency>
+
+			<!-- <dependency>
 				<groupId>org.jboss.spec</groupId>
 				<artifactId>jboss-javaee-6.0</artifactId>
 				<version>${version.jboss_javaee6_spec}</version>
 				<type>pom</type>
-				<scope>provided</scope>
-				<exclusions>
-					<exclusion>
-						<groupId>org.apache.xalan</groupId>
-						<artifactId>xalan</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>org.jboss.spec</groupId>
-				<artifactId>jboss-javaee-web-6.0</artifactId>
-				<version>${version.jboss_javaee6_spec}</version>
-				<type>pom</type>
-				<scope>provided</scope>
-				<exclusions>
-					<exclusion>
-						<groupId>org.apache.xalan</groupId>
-						<artifactId>xalan</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
+				<scope>import</scope>
+			</dependency> -->
 
 			<!-- Test dependencies -->
-			<dependency>
+			<!-- <dependency>
 				<groupId>org.jboss.arquillian</groupId>
 				<artifactId>arquillian-bom</artifactId>
 				<version>${version.arquillian_core}</version>
@@ -107,53 +84,14 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			<dependency>
-				<groupId>org.jboss.arquillian.ajocado</groupId>
-				<artifactId>arquillian-ajocado-junit</artifactId>
-				<version>${version.arquillian_ajocado}</version>
-				<type>pom</type>
-				<scope>test</scope>
-			</dependency>
 
 			<dependency>
-				<groupId>org.jboss.jsfunit</groupId>
-				<artifactId>jsfunit-arquillian</artifactId>
-				<version>${version.jsfunit}</version>
-				<scope>test</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.jboss.as</groupId>
-				<artifactId>jboss-as-arquillian-container-remote</artifactId>
-				<version>${version.jbossas_7}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.jboss.as</groupId>
-				<artifactId>jboss-as-controller-client</artifactId>
-				<version>${version.jbossas_7}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-simple</artifactId>
-				<version>${version.slf4j}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.jboss.resteasy</groupId>
-				<artifactId>resteasy-jaxrs</artifactId>
-				<version>${version.resteasy}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.jboss.solder</groupId>
-				<artifactId>solder-impl</artifactId>
-				<version>${version.jboss_solder}</version>
-			</dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>4.1.2</version>
+			</dependency> -->
 		</dependencies>
 	</dependencyManagement>
-
 
 	<dependencies>
 		<!-- Infinispan dependency -->
@@ -185,24 +123,28 @@
 			</exclusions>
 		</dependency>
 
-		<dependency>
-			<artifactId>jboss-logging</artifactId>
-			<groupId>org.jboss.logging</groupId>
-			<version>3.1.0.CR2</version>
-			<scope>runtime</scope>
-		</dependency>
+		<!-- <dependency> <artifactId>jboss-logging</artifactId> <groupId>org.jboss.logging</groupId> 
+			<version>3.1.2.GA</version> <scope>provided</scope> </dependency> -->
 
 		<dependency>
 			<groupId>org.jboss.solder</groupId>
 			<artifactId>solder-impl</artifactId>
+			<version>${version.solder}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.solder</groupId>
+			<artifactId>solder-logging</artifactId>
+			<version>${version.solder}</version>
+			<scope>runtime</scope>
 		</dependency>
 
 		<!-- First declare the APIs we depend on and need for compilation. All 
 			of them are provided by JBoss AS 7 -->
 		<dependency>
 			<groupId>org.jboss.spec.javax.faces</groupId>
-			<artifactId>jboss-jsf-api_2.0_spec</artifactId>
-			<version>1.0.0.Final</version>
+			<artifactId>jboss-jsf-api_2.1_spec</artifactId>
+			<version>2.0.7.Final</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -223,7 +165,9 @@
 		<dependency>
 			<groupId>org.jboss.spec</groupId>
 			<artifactId>jboss-javaee-6.0</artifactId>
+			<version>${version.jboss_javaee6_spec}</version>
 			<type>pom</type>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- Import the Common Annotations API (JSR-250), we use provided scope 
@@ -263,9 +207,8 @@
 		<dependency>
 			<groupId>org.jboss.ejb3</groupId>
 			<artifactId>jboss-ejb3-ext-api</artifactId>
-			<version>2.0.0-beta-1</version>
+			<version>2.0.0</version>
 			<scope>provided</scope>
-			<type>jar</type>
 		</dependency>
 
 		<dependency>
@@ -290,22 +233,25 @@
 			</exclusions>
 		</dependency>
 
+		
+
+
 		<!-- Now we declare any tools needed -->
 
 		<!-- Annotation processor to generate the JPA 2.0 metamodel classes for 
 			typesafe criteria queries -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-jpamodelgen</artifactId>
 			<version>1.1.1.Final</version>
 			<scope>provided</scope>
-		</dependency>
+		</dependency> -->
 
 		<!-- AWS SDK -->
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk</artifactId>
-			<version>1.2.14</version>
+			<version>1.2.15</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>commons-logging</artifactId>
@@ -336,84 +282,117 @@
 			<version>1.9.3</version>
 		</dependency>
 
-
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.6.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.6.4</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+			<scope>runtime</scope>
+		</dependency>
 
 		<!-- Needed for running tests (you may also use TestNG) -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.10</version>
 			<scope>test</scope>
 		</dependency>
 
 		<!-- Optional, but highly recommended -->
 		<!-- Arquillian allows you to test enterprise code such as EJBs and Transactional(JTA) 
 			JPA from JUnit/TestNG -->
-		<dependency>
-			<groupId>org.jboss.arquillian.protocol</groupId>
-			<artifactId>arquillian-protocol-servlet</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.jboss.arquillian.container</groupId>
-			<artifactId>arquillian-container-spi</artifactId>
-			<scope>test</scope>
-		</dependency>
+
 		<dependency>
 			<groupId>org.jboss.arquillian.junit</groupId>
 			<artifactId>arquillian-junit-container</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-core</artifactId>
-			<version>1.2</version>
-			<scope>test</scope>
+			<groupId>org.jboss.arquillian.protocol</groupId>
+			<artifactId>arquillian-protocol-servlet</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.jboss.shrinkwrap</groupId>
-			<artifactId>shrinkwrap-api</artifactId>
-			<scope>test</scope>
-		</dependency>
+
 		<dependency>
 			<groupId>org.jboss.shrinkwrap.descriptors</groupId>
-			<artifactId>shrinkwrap-descriptors-impl</artifactId>
-			<scope>test</scope>
+			<artifactId>shrinkwrap-descriptors-impl-javaee</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.jboss.shrinkwrap.resolver</groupId>
 			<artifactId>shrinkwrap-resolver-impl-maven</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.arquillian.extension</groupId>
+			<artifactId>arquillian-drone-impl</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- <dependency> <groupId>org.jboss.arquillian.extension</groupId> <artifactId>arquillian-drone-selenium</artifactId> 
+			<scope>test</scope> </dependency> <dependency> <groupId>org.jboss.arquillian.extension</groupId> 
+			<artifactId>arquillian-drone-selenium-server</artifactId> <scope>test</scope> 
+			</dependency> <dependency> <groupId>org.seleniumhq.selenium</groupId> <artifactId>selenium-java</artifactId> 
+			<scope>test</scope> </dependency> <dependency> <groupId>org.seleniumhq.selenium</groupId> 
+			<artifactId>selenium-server</artifactId> <scope>test</scope> <exclusions> 
+			<exclusion> <groupId>org.mortbay.jetty</groupId> <artifactId>servlet-api-2.5</artifactId> 
+			</exclusion> </exclusions> </dependency> <dependency> <groupId>net.sourceforge.htmlunit</groupId> 
+			<artifactId>htmlunit</artifactId> <version>2.9</version> </dependency> <dependency> 
+			<groupId>net.sourceforge.htmlunit</groupId> <artifactId>htmlunit-core-js</artifactId> 
+			<version>2.9</version> </dependency> -->
+
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
+			<version>1.6.4</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.jboss.jsfunit</groupId>
 			<artifactId>jsfunit-arquillian</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>httpclient</artifactId>
-					<groupId>org.apache.httpcomponents</groupId>
-				</exclusion>
-			</exclusions>
+			<version>${version.jsfunit}</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>org.jboss.resteasy</groupId>
-			<artifactId>resteasy-jaxrs</artifactId>
-		</dependency>
-
-		<dependency>
-			<artifactId>commons-httpclient</artifactId>
 			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
 			<version>3.1</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxrs</artifactId>
+			<version>${version.resteasy}</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>1.6.4</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.6.4</version>
+			<scope>test</scope>
+		</dependency>
+		
+		
 	</dependencies>
 
 	<build>
@@ -425,44 +404,40 @@
 				processors -->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.1</version>
+				<version>${version.compiler.plugin}</version>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-			<plugin>
-				<artifactId>maven-war-plugin</artifactId>
-			</plugin>
+
 			<!-- The JBoss AS plugin deploys your war to a local JBoss AS container -->
 			<!-- To use, set the JBOSS_HOME environment variable and run: mvn package 
 				jboss-as:deploy -->
 			<plugin>
 				<groupId>org.jboss.as.plugins</groupId>
 				<artifactId>jboss-as-maven-plugin</artifactId>
-				<version>7.0.2.Final</version>
+				<version>${version.jboss-as-maven-plugin}</version>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${version.surefire.plugin}</version>
+				<configuration>
+					<skip>false</skip>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>${version.war.plugin}</version>
+				<configuration>
+					<!-- Java EE 6 doesn't require web.xml, Maven needs to catch up! -->
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
 			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.11</version>
-					<configuration>
-						<skip>false</skip>
-					</configuration>
-				</plugin>
 
-				<plugin>
-					<artifactId>maven-war-plugin</artifactId>
-					<version>2.1.1</version>
-					<configuration>
-						<!-- Java EE 6 doesn't require web.xml, Maven needs to catch up! -->
-						<failOnMissingWebXml>false</failOnMissingWebXml>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 
 	<profiles>
@@ -475,28 +450,9 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<configuration>
-							<skip>true</skip>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>jbossas-7</id>
-			<dependencies>
-
-				<dependency>
-					<groupId>org.apache.httpcomponents</groupId>
-					<artifactId>httpclient</artifactId>
-					<version>4.1.1</version>
-					<scope>provided</scope>
-				</dependency>
-			</dependencies>
+			<!-- <dependencies> <dependency> <groupId>org.apache.httpcomponents</groupId> 
+				<artifactId>httpclient</artifactId> <version>4.1.1</version> <scope>provided</scope> 
+				</dependency> </dependencies> -->
 			<build>
 				<plugins>
 					<plugin>
@@ -533,14 +489,13 @@
 				<dependency>
 					<groupId>org.jboss.as</groupId>
 					<artifactId>jboss-as-arquillian-container-remote</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>org.jboss.as</groupId>
-					<artifactId>jboss-as-controller-client</artifactId>
+					<version>${version.jbossas_7}</version>
+					<scope>test</scope>
 				</dependency>
 				<dependency>
 					<groupId>org.jboss.spec</groupId>
 					<artifactId>jboss-javaee-6.0</artifactId>
+					<version>${version.jboss_javaee6_spec}</version>
 					<type>pom</type>
 				</dependency>
 			</dependencies>

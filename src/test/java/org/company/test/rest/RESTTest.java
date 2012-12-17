@@ -1,17 +1,29 @@
 package org.company.test.rest;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.net.URL;
+import java.util.List;
+
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+
 import junit.framework.Assert;
+
 import org.company.context.LoggerProducer;
 import org.company.context.SignupRequestListProducer;
 import org.company.model.SignupRequest;
 import org.company.model.Status;
 import org.company.rest.JaxRsActivator;
 import org.company.rest.SignupRequestRestService;
-import org.company.service.*;
+import org.company.service.LogNotifier;
+import org.company.service.Notifier;
+import org.company.service.Predicate;
+import org.company.service.SignupRequestNotFoundException;
+import org.company.service.SignupRequestService;
 import org.company.service.events.Approved;
 import org.company.service.events.Confirmed;
 import org.company.service.events.Denied;
@@ -30,7 +42,6 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
-import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,8 +66,19 @@ public class RESTTest {
 
         WebArchive jar = ShrinkWrap.create(WebArchive.class, "rest-test.war").addAsLibraries(
                 resolver.artifact(
-                "commons-httpclient:commons-httpclient:3.1").resolveAsFiles()).addClasses(SignupRequest.class, Status.class).addClass(LoggerProducer.class).addClass(Notifier.class).addClass(LogNotifier.class).addClass(SignupRequestService.class).addClass(MockSignupRequestService.class).addClass(SignupRequestListProducer.class).addClass(Predicate.class).addClass(SignupRequestNotFoundException.class).addClasses(Approved.class, Confirmed.class, Denied.class,
-                Registered.class).addPackage(SignupRequestRestService.class.getPackage()) // .addAsResource("users.properties", "users.properties")
+                "commons-httpclient:commons-httpclient:3.1").resolveAsFiles())
+                .addClasses(SignupRequest.class, Status.class)
+                .addClass(Notifier.class)
+                .addClass(LogNotifier.class)
+                .addClass(LoggerProducer.class)
+                .addClass(SignupRequestService.class)
+                .addClass(MockSignupRequestService.class)
+                .addClass(SignupRequestListProducer.class)
+                .addClass(Predicate.class)
+                .addClass(SignupRequestNotFoundException.class)
+                .addClasses(Approved.class, Confirmed.class, Denied.class,
+                Registered.class)
+                .addPackage(SignupRequestRestService.class.getPackage()) // .addAsResource("users.properties", "users.properties")
                 // .addAsResource("roles.properties", "roles.properties")
                 // .addAsWebResource(new File(WEBAPP_SRC, "index.html"))
                 // .addAsWebResource(new File(WEBAPP_SRC, "index.xhtml"))
@@ -135,7 +157,7 @@ public class RESTTest {
         mmap.add(SignupRequest.ATTR_FIRSTNAME, "hantsy");
         mmap.add(SignupRequest.ATTR_LASTNAME, "bai");
         System.out.println(client.register(mmap, "http://refer"));
-
+        
         String response = client.listAllUnconfirmedRequsts();
 
         System.out.println("unconfirmed response@" + response);

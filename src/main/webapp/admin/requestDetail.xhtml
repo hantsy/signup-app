@@ -6,7 +6,8 @@
 	template="/WEB-INF/templates/default.xhtml">
 	<ui:define name="metadata">
 		<f:metadata>
-			<f:viewParam name="id" value="#{viewAction.requestId}" required="true"/>
+			<f:viewParam name="id" value="#{viewAction.requestId}"
+				required="true" />
 			<f:event listener="#{viewAction.loadRequest}" type="preRenderView" />
 		</f:metadata>
 	</ui:define>
@@ -14,80 +15,80 @@
 		<h1>Signup Request Detail</h1>
 	</ui:define>
 	<ui:define name="content">
-		<form id="detailForm">
-			<div class="clearfix">
-				<div class="span3">
-					<h:outputText style="float:right;font-weight:bold;" value="Id" />
+		<div class="form-horizontal">
+			<div class="control-group output">
+				<div class="control-label">
+					<h:outputText  value="Id" />
 				</div>
-				<div class="span6">
+				<div class="controls">
 					<h:outputText value="#{viewAction.currentRequest.id}" />
 				</div>
 			</div>
-			<div class="clearfix">
-				<div class="span3">
-					<h:outputText style="float:right;font-weight:bold;" value="Name" />
+			<div class="control-group output">
+				<div class="control-label">
+					<h:outputText  value="Name" />
 				</div>
-				<div class="span6">
+				<div class="controls">
 					<h:outputText value="#{viewAction.currentRequest.name}" />
 				</div>
 			</div>
-			<div class="clearfix">
-				<div class="span3">
-					<h:outputText style="float:right;font-weight:bold;" value=" Email " />
+			<div class="control-group output">
+				<div class="control-label">
+					<h:outputText  value=" Email " />
 				</div>
-				<div class="span6">
+				<div class="controls">
 					<h:outputText value="#{viewAction.currentRequest.email}" />
 				</div>
 			</div>
-			<div class="clearfix">
-				<div class="span3">
-					<h:outputText style="float:right;font-weight:bold;"
+			<div class="control-group output">
+				<div class="control-label">
+					<h:outputText 
 						value="Company Name" />
 				</div>
-				<div class="span6">
+				<div class="controls">
 					<h:outputText value="#{viewAction.currentRequest.companyName}" />
 				</div>
 			</div>
-			<div class="clearfix">
-				<div class="span3">
-					<h:outputText style="float:right;font-weight:bold;"
+			<div class="control-group output">
+				<div class="control-label">
+					<h:outputText 
 						value="Http Referer" />
 				</div>
-				<div class="span6">
+				<div class="controls">
 					<h:outputText value="#{viewAction.currentRequest.httpRefer}" />
 				</div>
 			</div>
 
-			<div class="clearfix">
-				<div class="span3">
-					<h:outputText style="float:right;font-weight:bold;"
+			<div class="control-group output">
+				<div class="control-label">
+					<h:outputText 
 						value="Created On " />
 				</div>
-				<div class="span6">
+				<div class="controls">
 					<h:outputText value="#{viewAction.currentRequest.createdOn}">
 						<f:convertDateTime dateStyle="medium" />
 					</h:outputText>
 				</div>
 			</div>
-			<div class="clearfix">
-				<div class="span3">
-					<h:outputText style="float:right;font-weight:bold;" value="Status " />
+			<div class="control-group output">
+				<div class="control-label">
+					<h:outputText  value="Status " />
 				</div>
-				<div class="span6">
+				<div class="controls">
 					<h:outputText value="#{viewAction.currentRequest.status}" />
 				</div>
 			</div>
 			<ui:fragment rendered="#{viewAction.currentRequest.comment ne null}">
-				<div class="clearfix">
-					<div class="span3">
-						<h:outputText style="float:right;font-weight:bold;"
+				<div class="control-group output">
+					<div class="control-label">
+						<h:outputText 
 							value="Comment" />
 					</div>
-					<div class="span6">
+					<div class="controls">
 						<h:outputText value="#{viewAction.currentRequest.comment}" />
 					</div>
 				</div>
 			</ui:fragment>
-		</form>
+		</div>
 	</ui:define>
 </ui:composition>

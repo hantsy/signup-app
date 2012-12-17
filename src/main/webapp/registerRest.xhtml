@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/master.xhtml"
+	xmlns:bscomp="http://java.sun.com/jsf/composite/components">
+	<ui:define name="page">
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class=" brand" href="#"> Signup App Demo</a>
+				</div>
+			</div>
+		</div>
+		<!--content of form content  -->
+		<div class="container">
+			<div class="row page-header">
+				<h1>
+					Register via REST API <small>An demo page to add sample
+						data</small>
+				</h1>
+			</div>
+			<form method="post" class="form-horizontal"
+				action="#{request.contextPath}/rest/signup/register">
+				<fieldset>
+					<div class="control-group">
+						<label class="control-label" for="firstName">First Name:</label>
+						<div class="controls">
+							<input type="text" id="firstName" name="firstName" />
+						</div>
+					</div>
+
+
+					<div class="control-group">
+						<label class="control-label" for="lastName">Last Name:</label>
+						<div class="controls">
+							<input type="text" id="lastName" name="lastName" />
+						</div>
+					</div>
+
+
+					<div class="control-group">
+						<label class="control-label" for="email">Email:</label>
+
+						<div class="controls">
+							<input type="text" id="email" name="email" />
+						</div>
+					</div>
+
+
+					<div class="control-group">
+						<label class="control-label" for="companyName">Company
+							Name:</label>
+						<div class="controls">
+							<input type="text" id="companyName" name="companyName" />
+						</div>
+					</div>
+
+
+
+					<div class="control-group">
+						<label class="control-label" for="comment">Comment:</label>
+						<div class="controls">
+							<textarea id="comment" name="comment" cols="30" rows="8"></textarea>
+						</div>
+					</div>
+
+
+				</fieldset>
+				<div class="form-actions">
+					<input type="submit" value="Register via Rest API"
+						class="btn btn-primary" />
+				</div>
+			</form>
+		</div>
+		<footer>
+			<p>(C) Company 2011</p>
+		</footer>
+	</ui:define>
+	<!-- footer -->
+</ui:composition>

@@ -21,8 +21,10 @@ public class SignupRequestRestService {
 
     @Inject
     private SignupRequestService signupRequestService;
+    
     @Context
     UriInfo uriInfo;
+    
     @Context
     ServletContext servletContext;
 

@@ -1,0 +1,39 @@
+@CHARSET "UTF-8";
+
+body {
+	padding-top: 60px;
+	padding-bottom: 80px;
+}
+
+
+fieldset>fieldset {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	clear: both;
+}
+
+fieldset>fieldset>legend {
+	display: block;
+	width: 100%;
+	padding: 0;
+	margin-bottom: 15px;
+	font-size: 15.5px;
+	line-height: 30px;
+	color: #333333;
+	background-color: #f5f5f5;
+	border: 0;
+	border-bottom: 1px solid #e5e5e5;
+}
+
+footer p {
+	text-align: center;
+}
+
+.output .controls {
+	margin-top:5px;
+}
+
+.output .control-label {
+	font-weight: bold; 
+}

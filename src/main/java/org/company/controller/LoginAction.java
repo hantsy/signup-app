@@ -1,6 +1,6 @@
 package org.company.controller;
 
-import java.util.logging.Logger;
+import javax.enterprise.context.Conversation;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
@@ -12,81 +12,108 @@ import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Process login and logout action from administration console.
- *
+ * 
  * @author hantsy
  */
 @Named("loginAction")
 @RequestScoped
 public class LoginAction {
 
-    @Inject
-    private Logger log;
-    private String username;
-    private String password;
-    @Inject
-    @LoggedIn
-    Event<String> loggedInEventSrc;
+	// private static final Logger log = LoggerFactory
+	// .getLogger(LoginAction.class);
+	@Inject
+	private Logger log;
 
-    public String getUsername() {
-        return username;
-    }
+	private String username;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	private String password;
 
-    public String getPassword() {
-        return password;
-    }
+	@Inject
+	@LoggedIn
+	Event<String> loggedInEventSrc;
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	@Inject
+	Conversation conversation;
 
-    /**
-     * Logout action.
-     *
-     * @return if successfully, redirect to the login page.
-     */
-    public String logout() {
-        log.info("logout....@");
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        externalContext.invalidateSession();
-        try {
-            ((HttpServletRequest) externalContext.getRequest()).logout();
-        } catch (ServletException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return "/login?faces-redirect=true";
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    /**
-     * Login action.
-     *
-     * @return if successfully, redirect to unconfirmed list page, or return to login page.
-     */
-    public String login() {
-        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        try {
-            request.login(username, password);
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-            loggedInEventSrc.fire(this.username);
+	public String getPassword() {
+		return password;
+	}
 
-            return "/admin/unconfirmed?faces-redirect=true";
-        } catch (ServletException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return "/login?faces-redirect=true&error=1";
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public void onLoggedIn(
-            @Observes(notifyObserver = Reception.IF_EXISTS) @LoggedIn String username) {
-        log.info("loggedin event was triggered.");
-        FacesUtil.info("Welcome back, " + username);
+	/**
+	 * Logout action.
+	 * 
+	 * @return if successfully, redirect to the login page.
+	 */
+	public String logout() {
+		if (log.isInfoEnabled()) {
+			log.info("logout....@");
+		}
 
-    }
+		if (!conversation.isTransient()) {
+			conversation.end();
+		}
+
+		ExternalContext externalContext = FacesContext.getCurrentInstance()
+				.getExternalContext();
+		externalContext.invalidateSession();
+		try {
+			((HttpServletRequest) externalContext.getRequest()).logout();
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "/login?faces-redirect=true";
+	}
+
+	/**
+	 * Login action.
+	 * 
+	 * @return if successfully, redirect to unconfirmed list page, or return to
+	 *         login page.
+	 */
+	public String login() {
+		if (log.isInfoEnabled()) {
+			log.info("logged in as @" + this.username);
+		}
+
+		HttpServletRequest request = (HttpServletRequest) FacesContext
+				.getCurrentInstance().getExternalContext().getRequest();
+		try {
+			request.login(username, password);
+
+			loggedInEventSrc.fire(this.username);
+
+			return "/admin/unconfirmed?faces-redirect=true";
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "/login?faces-redirect=true&error=1";
+	}
+
+	public void onLoggedIn(
+			@Observes(notifyObserver = Reception.IF_EXISTS) @LoggedIn String username) {
+		if (log.isDebugEnabled()) {
+			log.debug("loggedin event was triggered.");
+		}
+		FacesUtil.info("Welcome back, " + username);
+
+	}
 }

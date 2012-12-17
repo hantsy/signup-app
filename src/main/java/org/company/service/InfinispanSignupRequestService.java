@@ -35,24 +35,31 @@ public class InfinispanSignupRequestService implements SignupRequestService {
     @Inject
     @UnconfirmedCache
     private Cache<String, SignupRequest> unconfirmedCache;
+    
     @Inject
     @ConfirmedCache
     private Cache<String, SignupRequest> confirmedCache;
+    
     @Inject
     @ApprovedCache
     private Cache<String, SignupRequest> approvedCache;
+    
     @Inject
     @DeniedCache
     private Cache<String, SignupRequest> deniedCache;
+    
     @Inject
     @Registered
     Event<SignupRequest> registerEventSrc;
+    
     @Inject
     @Confirmed
     private Event<SignupRequest> confirmEventSrc;
+    
     @Inject
     @Approved
     private Event<SignupRequest> approveEventSrc;
+    
     @Inject
     @Denied
     private Event<SignupRequest> denyEventSrc;

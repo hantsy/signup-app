@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
@@ -40,6 +39,7 @@ import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
 
 @RunWith(Arquillian.class)
 public class JSFTest {
@@ -62,6 +62,15 @@ public class JSFTest {
 				.addAsLibraries(
 						resolver.artifact("org.jboss.solder:solder-impl")
 								.resolveAsFiles())
+				.addAsLibraries(
+						resolver.artifact("log4j:log4j")
+								.resolveAsFiles())
+				.addAsLibraries(
+						resolver.artifact("org.slf4j:slf4j-log4j12")
+								.resolveAsFiles())
+				.addAsLibraries(
+						resolver.artifact("org.slf4j:slf4j-api:")
+								.resolveAsFiles())
 				.addClasses(SignupRequest.class, Status.class)
 				.addClass(LoggerProducer.class)
 				.addClass(Notifier.class)
@@ -75,8 +84,8 @@ public class JSFTest {
 						Registered.class)
 				.addClass(LoggedIn.class)
 				.addPackage(LoginAction.class.getPackage())
-				.addAsResource("users.properties", "users.properties")
-				.addAsResource("roles.properties", "roles.properties")
+				//.addAsResource("users.properties", "users.properties")
+				//.addAsResource("roles.properties", "roles.properties")
 				.addAsWebResource(new File(WEBAPP_SRC, "index.html"))
 				.addAsWebResource(new File(WEBAPP_SRC, "index.xhtml"))
 				.addAsWebResource(new File(WEBAPP_SRC, "login.xhtml"))
@@ -104,32 +113,45 @@ public class JSFTest {
 						"admin/unconfirmed.xhtml")
 				.addAsWebResource(
 						new File(WEBAPP_SRC,
-								"resources/bscomp/formInputField.xhtml"),
-						"resources/bscomp/formInputField.xhtml")
+								"resources/components/formInputField.xhtml"),
+						"resources/components/formInputField.xhtml")
+//				.addAsWebResource(
+//						new File(WEBAPP_SRC, "resources/css/bootstrap.min.css"),
+//						"resources/css/bootstrap.min.css")
+//                .addAsWebResource(
+//						new File(WEBAPP_SRC, "resources/css/bootstrap-responsive.min.css"),
+//						"resources/css/bootstrap-responsive.min.css")
+				.addAsWebResource(EmptyAsset.INSTANCE,
+						"resources/css/bootstrap.min.css")
+                .addAsWebResource(EmptyAsset.INSTANCE,
+						"resources/css/bootstrap-responsive.min.css")
 				.addAsWebResource(
-						new File(WEBAPP_SRC, "resources/css/bootstrap.css"),
-						"resources/css/bootstrap.css")
+						new File(WEBAPP_SRC, "resources/css/custom.css"),
+						"resources/css/custome.css")
 				.addAsWebResource(
-						new File(WEBAPP_SRC, "resources/css/container-app.css"),
-						"resources/css/container-app.css")
+						new File(WEBAPP_SRC, "resources/img/glyphicons-halflings-white.png"),
+						"resources/img/glyphicons-halflings-white.png")	
 				.addAsWebResource(
-						new File(WEBAPP_SRC, "resources/css/screen.css"),
-						"resources/css/screen.css")
-				.addAsWebResource(
-						new File(WEBAPP_SRC, "resources/gfx/banner.png"),
-						"resources/gfx/banner.png")
-				.addAsWebResource(
-						new File(WEBAPP_SRC, "resources/gfx/logo.png"),
-						"resources/gfx/logo.png")
-				.addAsWebResource(
-						new File(WEBAPP_SRC, "resources/images/logo.png"),
-						"resources/images/logo.png")
+						new File(WEBAPP_SRC, "resources/img/glyphicons-halflings.png"),
+						"resources/img/glyphicons-halflings.png")	
+//				.addAsWebResource(
+//						new File(WEBAPP_SRC, "resources/js/bootstrap.min.js"),
+//						"resources/js/bootstrap.min.js")
+//				.addAsWebResource(
+//						new File(WEBAPP_SRC, "resources/js/jquery.js"),
+//						"resources/js/jquery.js")
+						
+				.addAsWebResource(EmptyAsset.INSTANCE,
+						"resources/js/bootstrap.min.js")
+				.addAsWebResource(EmptyAsset.INSTANCE,
+						"resources/js/jquery.js")
+						
 				.addAsWebInfResource(
 						new File(WEBINF_SRC, "templates/default.xhtml"),
 						"templates/default.xhtml")
 				.addAsWebInfResource(
-						new File(WEBINF_SRC, "templates/container-app.xhtml"),
-						"templates/container-app.xhtml")
+						new File(WEBINF_SRC, "templates/master.xhtml"),
+						"templates/master.xhtml")
 				.addAsWebInfResource(
 						new File(WEBINF_SRC, "templates/topbar.xhtml"),
 						"templates/topbar.xhtml")
@@ -168,13 +190,13 @@ public class JSFTest {
 			throws IOException {
 		Assert.assertEquals("/login.xhtml", server.getCurrentViewID());
 
-		client.setValue("loginForm:username", "user");
-		client.setValue("loginForm:password", "user");
-		client.click("loginForm:loginButton");
+		client.setValue("form:username", "test");
+		client.setValue("form:password", "test123");
+		client.click("form:loginButton");
 
 		Assert.assertEquals("/admin/unconfirmed.xhtml",
 				server.getCurrentViewID());
-		Assert.assertEquals("user", server.getFacesContext()
+		Assert.assertEquals("test", server.getFacesContext()
 				.getExternalContext().getRemoteUser());
 		log.info("server.getFacesContext().getExternalContext().getUserPrincipal()@"
 				+ server.getFacesContext().getExternalContext()
@@ -186,7 +208,7 @@ public class JSFTest {
 				+ server.getFacesContext().getExternalContext()
 						.isUserInRole("ROLE_ADMINISTRATOR"));
 
-		client.click("logoutForm:logoutButton");
+		client.click("form:logoutButton");
 		Assert.assertEquals("/login.xhtml", server.getCurrentViewID());
 		Assert.assertNull(server.getFacesContext().getExternalContext()
 				.getRemoteUser());
@@ -197,13 +219,13 @@ public class JSFTest {
 	public void testConfirmRequest(JSFServerSession server,
 			JSFClientSession client) throws IOException {
 		Assert.assertEquals("/register.xhtml", server.getCurrentViewID());
-		client.setValue("regForm:firstName:input", "hantsy");
-		client.setValue("regForm:lastName:input", "bai");
-		client.setValue("regForm:email:input", "hantsy@abc.com");
-		client.setValue("regForm:companyName:input", "Hantsy Labs");
-		client.setValue("regForm:comment:input", "No Comments");
+		client.setValue("form:firstName:input", "hantsy");
+		client.setValue("form:lastName:input", "bai");
+		client.setValue("form:email:input", "hantsy@abc.com");
+		client.setValue("form:companyName:input", "Hantsy Labs");
+		client.setValue("form:comment:input", "No Comments");
 
-		client.click("regForm:registerButton");
+		client.click("form:registerButton");
 
 		Assert.assertEquals("/ok.xhtml", server.getCurrentViewID());
 
@@ -219,9 +241,9 @@ public class JSFTest {
 			JSFClientSession client) throws IOException {
 		Assert.assertEquals("/login.xhtml", server.getCurrentViewID());
 
-		client.setValue("loginForm:username", "admin");
-		client.setValue("loginForm:password", "admin");
-		client.click("loginForm:loginButton");
+		client.setValue("form:username", "admin");
+		client.setValue("form:password", "admin123");
+		client.click("form:loginButton");
 
 		Assert.assertEquals("/admin/unconfirmed.xhtml",
 				server.getCurrentViewID());
@@ -235,20 +257,20 @@ public class JSFTest {
 						.isUserInRole("ROLE_ADMINISTRATOR"));
 
 		// register
-		client.click("registerLink");
+		client.click("form:registerLink");
 		Assert.assertEquals("/register.xhtml", server.getCurrentViewID());
-		client.setValue("regForm:firstName:input", "hantsy");
-		client.setValue("regForm:lastName:input", "bai");
-		client.setValue("regForm:email:input", "hantsy@abc.com");
-		client.setValue("regForm:companyName:input", "Hantsy Labs");
-		client.setValue("regForm:comment:input", "No Comments");
+		client.setValue("form:firstName:input", "hantsy");
+		client.setValue("form:lastName:input", "bai");
+		client.setValue("form:email:input", "hantsy@abc.com");
+		client.setValue("form:companyName:input", "Hantsy Labs");
+		client.setValue("form:comment:input", "No Comments");
 
-		client.click("regForm:registerButton");
+		client.click("form:registerButton");
 
 		Assert.assertEquals("/ok.xhtml", server.getCurrentViewID());
 
 		// unconfirmed
-		client.click("unconfirmedLink");
+		client.click("form:unconfirmedLink");
 		Assert.assertEquals("/admin/unconfirmed.xhtml",
 				server.getCurrentViewID());
 		client.click("form:dataTable:0:confirmButton");
@@ -256,20 +278,20 @@ public class JSFTest {
 				server.getCurrentViewID());
 
 		// confirmed
-		client.click("confirmedLink");
+		client.click("form:confirmedLink");
 		Assert.assertEquals("/admin/confirmed.xhtml", server.getCurrentViewID());
 		client.click("form:dataTable:0:approveButton");
 
 		// approved
-		client.click("approvedLink");
+		client.click("form:approvedLink");
 		Assert.assertEquals("/admin/approved.xhtml", server.getCurrentViewID());
-		client.click("dataTable:0:viewLink");
+		client.click("form:dataTable:0:viewLink");
 
 		Assert.assertEquals("/admin/requestDetail.xhtml",
 				server.getCurrentViewID());
 		Assert.assertTrue(client.getPageAsText().contains("hantsy"));
 
-		client.click("logoutForm:logoutButton");
+		client.click("form:logoutButton");
 		Assert.assertEquals("/login.xhtml", server.getCurrentViewID());
 		Assert.assertNull(server.getFacesContext().getExternalContext()
 				.getRemoteUser());
@@ -288,9 +310,9 @@ public class JSFTest {
 			JSFClientSession client) throws IOException {
 		Assert.assertEquals("/login.xhtml", server.getCurrentViewID());
 
-		client.setValue("loginForm:username", "admin");
-		client.setValue("loginForm:password", "admin");
-		client.click("loginForm:loginButton");
+		client.setValue("form:username", "admin");
+		client.setValue("form:password", "admin123");
+		client.click("form:loginButton");
 
 		Assert.assertEquals("/admin/unconfirmed.xhtml",
 				server.getCurrentViewID());
@@ -304,51 +326,51 @@ public class JSFTest {
 						.isUserInRole("ROLE_ADMINISTRATOR"));
 
 		// register
-		client.click("registerLink");
+		client.click("form:registerLink");
 		Assert.assertEquals("/register.xhtml", server.getCurrentViewID());
-		client.setValue("regForm:firstName:input", "hantsy");
-		client.setValue("regForm:lastName:input", "bai");
-		client.setValue("regForm:email:input", "hantsy@abc.com");
-		client.setValue("regForm:companyName:input", "Hantsy Labs");
-		client.setValue("regForm:comment:input", "No Comments");
+		client.setValue("form:firstName:input", "hantsy");
+		client.setValue("form:lastName:input", "bai");
+		client.setValue("form:email:input", "hantsy@abc.com");
+		client.setValue("form:companyName:input", "Hantsy Labs");
+		client.setValue("form:comment:input", "No Comments");
 
-		client.click("regForm:registerButton");
+		client.click("form:registerButton");
 
 		Assert.assertEquals("/ok.xhtml", server.getCurrentViewID());
 
 		// unconfirmed
-		client.click("unconfirmedLink");
+		client.click("form:unconfirmedLink");
 		Assert.assertEquals("/admin/unconfirmed.xhtml",
 				server.getCurrentViewID());
 		client.click("form:dataTable:0:confirmButton");
 		Assert.assertEquals("/admin/unconfirmed.xhtml",
 				server.getCurrentViewID());
 		// confirmed
-		client.click("confirmedLink");
+		client.click("form:confirmedLink");
 		Assert.assertEquals("/admin/confirmed.xhtml", server.getCurrentViewID());
 		client.click("form:dataTable:0:confirmDenialLink");
 
 		// confirmDenial
 		Assert.assertEquals("/admin/confirmDenial.xhtml",
 				server.getCurrentViewID());
-		client.setValue("confirmDenialForm:comment", "No Comments");
-		client.click("confirmDenialForm:denyButton");
+		client.setValue("form:comment", "No Comments");
+		client.click("form:denyButton");
 
 		// denied
-		client.click("deniedLink");
+		client.click("form:deniedLink");
 		Assert.assertEquals("/admin/denied.xhtml", server.getCurrentViewID());
 		client.click("form:dataTable:0:approveButton");
 
 		// approved
-		client.click("approvedLink");
+		client.click("form:approvedLink");
 		Assert.assertEquals("/admin/approved.xhtml", server.getCurrentViewID());
-		client.click("dataTable:0:viewLink");
+		client.click("form:dataTable:0:viewLink");
 
 		Assert.assertEquals("/admin/requestDetail.xhtml",
 				server.getCurrentViewID());
 		Assert.assertTrue(client.getPageAsText().contains("No Comments"));
 
-		client.click("logoutForm:logoutButton");
+		client.click("form:logoutButton");
 		Assert.assertEquals("/login.xhtml", server.getCurrentViewID());
 		Assert.assertNull(server.getFacesContext().getExternalContext()
 				.getRemoteUser());

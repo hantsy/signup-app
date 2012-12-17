@@ -2,12 +2,39 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	template="/WEB-INF/templates/container-app.xhtml">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	template="/WEB-INF/templates/master.xhtml">
 
-	<ui:define name="topbar">
-		<ui:include src="/WEB-INF/templates/topbar.xhtml" />
-	</ui:define>
-
-	<ui:define name="sidebar">
+	<ui:define name="page">
+		<h:form id="form">
+			<ui:include src="/WEB-INF/templates/topbar.xhtml" />
+			<div class="container-fluid">
+				<div class="page-header">
+					<ui:insert name="header">
+						<h1>
+							Page name <small>Supporting text or tagline</small>
+						</h1>
+					</ui:insert>
+				</div>
+				<ui:fragment rendered="#{not empty facesContext.messageList}">
+					<div class="row-fluid">
+						<h:messages id="messages" layout="vertical" globalOnly="true"
+							styleClass="unstyled" showSummary="true" showDetail="false"
+							errorClass="alert alert-error" infoClass="alert alert-info"
+							warnClass="alert alert-warning" />
+					</div>
+				</ui:fragment>
+				<div class="row-fluid">
+					<ui:insert name="content">Content</ui:insert>
+				</div>
+			</div>
+			<hr />
+			<footer>
+			<p>&copy; Company 2011</p>
+			</footer>
+		</h:form>
+		<!-- /container -->
+		
 	</ui:define>
 </ui:composition>

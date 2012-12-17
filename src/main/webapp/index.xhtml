@@ -3,13 +3,31 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	template="/WEB-INF/templates/default.xhtml">
-	<ui:define name="header">
-		<h1>Home Page</h1>
-	</ui:define>
-	<ui:define name="content">
-		<p>You have successfully deployed a Java EE 6 web application on
-			JBoss AS 7.</p>
-
+	template="/WEB-INF/templates/master.xhtml">
+	<ui:define name="page">
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class=" brand" href="#"> Signup App Demo</a>
+					<div class="pull-right">
+						<h:link outcome="/login.xhtml" value="Login"
+							styleClass="btn btn-small btn-primary" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<div class="hero-unit">
+				<h1>Signup App</h1>
+				<p>An application demonstrated techniques of Java EE6 and
+					JBoss.org.</p>
+			</div>
+			<div class="row-fluid">You have successfully deployed a Java EE 6 web
+				application on JBoss AS 7.</div>
+		</div>
+		<hr />
+		<footer>
+			<p>(C) Company 2011</p>
+		</footer>
 	</ui:define>
 </ui:composition>

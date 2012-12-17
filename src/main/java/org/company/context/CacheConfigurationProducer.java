@@ -18,6 +18,7 @@ import org.infinispan.eviction.EvictionStrategy;
  *
  */
 public class CacheConfigurationProducer {
+	private static final String CACHE_LOC="signup-cache";
 
     @ConfigureCache("signup-unconfirmed-cache")
     @UnconfirmedCache
@@ -34,7 +35,7 @@ public class CacheConfigurationProducer {
                     .preload(true)
                     .passivation(false)
                 .addFileCacheStore()
-                     .location("signup-unconfirmed-cache")
+                     .location(CACHE_LOC)
                      .fetchPersistentState(true)
                      .purgeOnStartup(false)
                      .ignoreModifications(false)
@@ -56,7 +57,7 @@ public class CacheConfigurationProducer {
                     .preload(true)
                     .passivation(false)
                 .addFileCacheStore()
-                     .location("signup-confirmed-cache")
+                     .location(CACHE_LOC)
                      .fetchPersistentState(true)
                      .purgeOnStartup(false)
                      .ignoreModifications(false)
@@ -78,7 +79,7 @@ public class CacheConfigurationProducer {
                     .preload(true)
                     .passivation(false)
                 .addFileCacheStore()
-                     .location("signup-approved-cache")
+                     .location(CACHE_LOC)
                      .fetchPersistentState(true)
                      .purgeOnStartup(false)
                      .ignoreModifications(false)
@@ -100,7 +101,7 @@ public class CacheConfigurationProducer {
                     .preload(true)
                     .passivation(false)
                 .addFileCacheStore()
-                     .location("signup-denied-cache")
+                     .location(CACHE_LOC)
                      .fetchPersistentState(true)
                      .purgeOnStartup(false)
                      .ignoreModifications(false)

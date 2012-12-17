@@ -13,9 +13,9 @@
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-        <div class="clearfix">
-            <h:outputLabel for="#{cc.clientId}:input" value="#{cc.attrs.label}"/>
-            <div class="input">
+        <div class="control-group">
+            <h:outputLabel styleClass="control-label" for="#{cc.clientId}:input" value="#{cc.attrs.label}"/>
+            <div class="controls">
                 <h:inputText styleClass="#{cc.attrs.styleClass}" id="input" value="#{cc.attrs.value}"/>
             </div>
         </div>

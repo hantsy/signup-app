@@ -1,7 +1,7 @@
 package org.company.context;
 
 import java.util.List;
-import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
@@ -9,12 +9,16 @@ import javax.enterprise.event.Reception;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
+
 import org.company.model.SignupRequest;
 import org.company.service.SignupRequestService;
 import org.company.service.events.Approved;
 import org.company.service.events.Confirmed;
 import org.company.service.events.Denied;
 import org.company.service.events.Registered;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * Produce cache data according to different cache type.
@@ -23,9 +27,9 @@ import org.company.service.events.Registered;
  */
 @ApplicationScoped
 public class SignupRequestListProducer {
-
-    @Inject
-    Logger log;
+	@Inject
+	private Logger log;
+    
     @Inject
     private SignupRequestService requestService;
     private List<SignupRequest> unconfirmedRequests;

@@ -1,12 +1,12 @@
 package org.company.service;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Named;
+
 import org.company.model.SignupRequest;
 import org.company.service.events.Registered;
+import org.slf4j.Logger;
 /**
  * The dummy implementation of the {@link Notifier}.
  * 
@@ -20,6 +20,6 @@ public class LogNotifier implements Notifier {
 
     @Override
     public void notify(@Observes @Registered SignupRequest signupRequest) {
-        log.log(Level.INFO, "receiving {0}", signupRequest);
+        log.info( "receiving @"+ signupRequest);
     }
 }

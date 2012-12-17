@@ -27,7 +27,9 @@ import org.company.service.events.Registered;
 public class AmazonNotifier implements Notifier {
 
     private final String ENDPOINT = "https://sns.eu-west-1.amazonaws.com";
+    
     private final String AWS_PROPERTIES = "/aws.properties";
+    
     @Inject
     private SignupPublishRequest publishRequest;
 

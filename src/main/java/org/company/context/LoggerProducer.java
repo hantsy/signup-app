@@ -1,19 +1,15 @@
 package org.company.context;
 
-import java.util.logging.Logger;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 
-/**
- * Produce logger.
- *
- * @author hantsy
- *
- */
-public class LoggerProducer {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-    @Produces
-    public Logger produceLog(InjectionPoint injectionPoint) {
-        return Logger.getLogger(injectionPoint.getMember().getDeclaringClass().getName());
-    }
+public class LoggerProducer {
+		
+	@Produces
+	public Logger logger(InjectionPoint injectionPoint){
+		return LoggerFactory.getLogger(injectionPoint.getMember().getDeclaringClass().getName());
+	}
 }

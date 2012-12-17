@@ -1,13 +1,16 @@
 package org.company.controller;
 
 import java.io.IOException;
-import java.util.logging.Logger;
+
 import javax.servlet.http.HttpServletResponse;
+
 import org.company.service.SignupRequestNotFoundException;
 import org.jboss.solder.exception.control.CaughtException;
 import org.jboss.solder.exception.control.Handles;
 import org.jboss.solder.exception.control.HandlesExceptions;
+import org.jboss.solder.logging.Logger;
 import org.jboss.solder.servlet.WebRequest;
+
 
 /**
  * Handle the exception in jsf.

@@ -4,17 +4,15 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	template="/WEB-INF/templates/default.xhtml"
-	xmlns:bscomp="http://java.sun.com/jsf/composite/bscomp">
+	xmlns:bscomp="http://java.sun.com/jsf/composite/components">
 
 	<ui:define name="header">
-		<h1>Register</h1>
+		<h1>Register <small>An demo page to add sample data</small></h1>
 	</ui:define>
 
 	<ui:define name="content">
-
-		<h:form id="regForm">
-			<fieldset>
-				<legend>Register</legend>
+		<div class="form-horizontal">
+			<fieldset>		
 				<bscomp:formInputField label="firstname" id="firstName"
 					value="#{registerAction.currentRequest.firstName}" />
 				<bscomp:formInputField label="lastname" id="lastName"
@@ -25,67 +23,17 @@
 					value="#{registerAction.currentRequest.companyName}" />
 				<bscomp:formInputField label="comment" id="comment"
 					value="#{registerAction.currentRequest.comment}" />
-
-				<div class="actions">
-					<h:commandButton id="registerButton" styleClass="btn primary"
-						action="#{registerAction.register}" value="Register" />
-					<h:outputText value=" Registered!"
-						rendered="#{facesContext.postback and empty facesContext.messageList}"
-						style="color: green;" />
-				</div>
 			</fieldset>
-		</h:form>
 
-		<form method="post"
-			action="#{request.contextPath}/rest/signup/register">
-			<fieldset>
-				<legend>Register via REST API</legend>
-				<div class="clearfix">
-					<label for="firstName">First Name:</label>
-					<div class="input">
-						<input type="text" id="firstName" name="firstName" />
-					</div>
-				</div>
+			<div class="form-actions">
+				<h:commandButton id="registerButton" styleClass="btn btn-primary"
+					action="#{registerAction.register}" value="Register" />
+				<h:outputText value=" Registered!"
+					rendered="#{facesContext.postback and empty facesContext.messageList}"
+					style="color: green;" />
+			</div>
+		</div>
 
-
-				<div class="clearfix">
-					<label for="lastName">Last Name:</label>
-					<div class="input">
-						<input type="text" id="lastName" name="lastName" />
-					</div>
-				</div>
-
-
-				<div class="clearfix">
-					<label for="email">Email:</label>
-
-					<div class="input">
-						<input type="text" id="email" name="email" />
-					</div>
-				</div>
-
-
-				<div class="clearfix">
-					<label for="companyName">Company Name:</label>
-					<div class="input">
-						<input type="text" id="companyName" name="companyName" />
-					</div>
-				</div>
-
-
-
-				<div class="clearfix">
-					<label for="comment">Comment:</label>
-					<div class="input">
-						<textarea id="comment" name="comment" cols="30" rows="8"></textarea>
-					</div>
-				</div>
-
-				<div class="actions">
-					<input type="submit" value="Register via Rest API"
-						class="btn primary" />
-				</div>
-			</fieldset>
-		</form>
 	</ui:define>
+	
 </ui:composition>

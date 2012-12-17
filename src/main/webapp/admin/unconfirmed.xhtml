@@ -8,54 +8,37 @@
 		<h1>Unconfirmed Signup Requests</h1>
 	</ui:define>
 	<ui:define name="content">
-		<h:panelGroup rendered="#{empty unconfirmedRequests}">
+		<h:panelGroup rendered="#{empty unconfirmedRequests}" layout="block">
 			<em>No unconfirmed requests.</em>
 		</h:panelGroup>
 		<ui:fragment rendered="#{not empty unconfirmedRequests}">
-			<h:form id="form">
-				<h:dataTable id="dataTable" var="obj" value="#{unconfirmedRequests}"
-					styleClass="zebra-striped">
-					<h:column>
-						<f:facet name="header">Name</f:facet>
-                #{obj.name}
-            </h:column>
-					<h:column>
-						<f:facet name="header">Email</f:facet>
-                #{obj.email}
-            </h:column>
-					<h:column>
-						<f:facet name="header">Company Name</f:facet>
-                #{obj.companyName}
-            </h:column>
-					<h:column>
-						<f:facet name="header">Created On</f:facet>
-						<h:outputText value="#{obj.createdOn}">
-							<f:convertDateTime dateStyle="medium" />
-						</h:outputText>
-					</h:column>
-					<h:column>
-						<f:facet name="header">Action</f:facet>
-						<!-- <h:panelGroup>
-							<a href="#{request.contextPath}/rest/signup/#{obj.id}"> Rest
-								View</a>
-						</h:panelGroup> -->
-						<h:link id="viewLink" outcome="/admin/requestDetail" value="View"
-							styleClass="btn">
-							<f:param name="id" value="#{obj.id}" />
-						</h:link>#{' '}
-						<ui:fragment
-							rendered="#{facesContext.externalContext.isUserInRole('ROLE_ADMINISTRATOR')}">
-							<h:commandButton id="confirmButton" action="#{requestHome.confirm(obj.id)}"
-								value="Confirm" styleClass="btn primary" />
-						</ui:fragment>
-					</h:column>
-					<!--f:facet name="footer">
-						<h:panelGroup>   REST URL for all Unconfirmed Requests: <a
-								href="#{request.contextPath}/rest/signup/unconfirmed">/rest/signup/unconfirmed</a>
-						</h:panelGroup>
-					</f:facet-->
-				</h:dataTable>
-			</h:form>
+			<table class="table">
+				<tr>
+					<th>Name</th>
+					<th>Email</th>
+					<th>Company Name</th>
+					<th width="150px">Created On</th>
+					<th width="150px">Action</th>
+				</tr>
+				<ui:repeat id="dataTable" var="obj" value="#{unconfirmedRequests}">
+					<tr>
+						<td><h:link id="viewLink" outcome="/admin/requestDetail">
+								<f:param name="id" value="#{obj.id}" />
+							#{obj.name}</h:link></td>
+						<td><a href="mailto:#{obj.email}">#{obj.email}</a></td>
+						<td>#{obj.companyName}</td>
+						<td widtd="150px"><h:outputText value="#{obj.createdOn}">
+								<f:convertDateTime dateStyle="medium" />
+							</h:outputText></td>
+						<td widtd="150px">#{' '} <ui:fragment
+								rendered="#{facesContext.externalContext.isUserInRole('ROLE_ADMINISTRATOR')}">
+								<h:commandButton id="confirmButton"
+									action="#{requestHome.confirm(obj.id)}" value="Confirm"
+									styleClass="btn primary" />
+							</ui:fragment></td>
+					</tr>
+				</ui:repeat>
+			</table>
 		</ui:fragment>
 	</ui:define>
 </ui:composition>

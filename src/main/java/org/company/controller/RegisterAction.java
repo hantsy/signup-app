@@ -1,17 +1,21 @@
 package org.company.controller;
 
 import java.io.Serializable;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+
 import org.company.model.SignupRequest;
 import org.company.service.SignupRequestService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Register a Signup request.
- *
+ * 
  * @author hantsy
  */
 @Named("registerAction")
@@ -19,44 +23,48 @@ import org.company.service.SignupRequestService;
 // @Stateful
 public class RegisterAction implements Serializable {
 
-    // @Inject
-    // private Logger log;
-    /**
+	/**
      *
      */
-    private static final long serialVersionUID = -7123511030910501473L;
-    @Inject
-    private SignupRequestService requestService;
-    @Inject
-    Conversation convesation;
-    private SignupRequest currentRequest;
+	private static final long serialVersionUID = -7123511030910501473L;
 
-    public String register() {
-        // log.info("Registering " + currentRequest.getName());
-        requestService.register(currentRequest);
+	private static final Logger log = LoggerFactory
+			.getLogger(RegisterAction.class);
 
-        if (!convesation.isTransient()) {
-            convesation.end();
-        }
+	@Inject
+	private SignupRequestService requestService;
 
-        return "/ok?faces-redirect=true";
+	@Inject
+	Conversation convesation;
 
-    }
+	private SignupRequest currentRequest;
 
-    @PostConstruct
-    public void initNewRequest() {
-        if (convesation.isTransient()) {
-            convesation.begin();
-        }
+	public String register() {
+		log.info("Registering " + currentRequest.getName());
+		requestService.register(currentRequest);
 
-        currentRequest = new SignupRequest();
-    }
+		if (!convesation.isTransient()) {
+			convesation.end();
+		}
 
-    public SignupRequest getCurrentRequest() {
-        return currentRequest;
-    }
+		return "/ok?faces-redirect=true";
 
-    public void setCurrentRequest(SignupRequest currentRequest) {
-        this.currentRequest = currentRequest;
-    }
+	}
+
+	@PostConstruct
+	public void initNewRequest() {
+		if (convesation.isTransient()) {
+			convesation.begin();
+		}
+
+		currentRequest = new SignupRequest();
+	}
+
+	public SignupRequest getCurrentRequest() {
+		return currentRequest;
+	}
+
+	public void setCurrentRequest(SignupRequest currentRequest) {
+		this.currentRequest = currentRequest;
+	}
 }

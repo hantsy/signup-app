@@ -8,7 +8,9 @@
 	<engine>
 		<property name="deploymentExportPath">target/</property>
 	</engine>
-	<defaultProtocol type="Servlet 3.0" />
+	
+	<!-- Force the use of the Servlet 3.0 protocol with all containers, as it is the most mature -->
+    <defaultProtocol type="Servlet 3.0"/>
 
 	<container qualifier="jbossas-remote-7" default="true">
 		<configuration>
