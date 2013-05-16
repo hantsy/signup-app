@@ -29,14 +29,16 @@ Key techniques are used in this app.
    Download the Apache Maven from [Apache.org](http://www.apache.org). Extract the files to your local disk, set the *M2_HOME* variable and add *M2_HOME/bin* to path.
 
    Open your terminal, type `mvn -version` and press ENTER, you should see the following similar information.
-        
+    
+   <pre>
         Apache Maven 3.0.4 (r1232337; 2012-01-17 16:44:56+0800)
         Maven home: D:\build\maven
         Java version: 1.6.0_30, vendor: Sun Microsystems Inc.
         Java home: D:\jdk6\jre
         Default locale: zh_CN, platform encoding: GBK
         OS name: "windows 7", version: "6.1", arch: "x86", family: "windows"
-
+   </pre>
+   
 3. JBoss 7  Application Server
    
    Download the latest JBoss 7 AS application server from [JBoss.org](http://www.jboss.org). Extract the files into your local disk. Optionally, you can setup JBOSS_HOME environment variable, the location is the jboss folder. 
@@ -70,20 +72,23 @@ There are two ways povided in this app to configure the JAAS users and roles, wr
 There are two roles in the application, *ROLE_AMINISTRATOR* can approve and deny signup request, *ROLE_VIEWER* can view the pages.	
 
 The user/password pairs are:
- * admin/admin123 (ROLE_AMINISTRATOR)
- * user/user123 (ROLE_VIEWER)
+
+* admin/admin123 (ROLE_AMINISTRATOR)
+* user/user123 (ROLE_VIEWER)
  
 The */admin* path is protected by default, use *BASIC* based authentication, please refer the configuration in *web.xml*
 file under the *WEB-INF* folder.
 
 There are several approaches for storing the autentication info, UsersRoles used properties file and Database used database, others you can refer the JBoss AS documentation.
 
-* Configuration using UsersRoles login-module code.
-  
-  1. JBoss 7.1 provides command line to add application users easily. Open cmd prompt and enter the <JBOSS_HOME>/bin, run *add-user*, and follow the step to create
+#### Configuration using UsersRoles login-module code.
+
+1. JBoss 7.1 provides command line to add application users easily. Open cmd prompt and enter the <JBOSS_HOME>/bin, run *add-user*, and follow the step to create
 two users:
 
-	<pre>
+  Add *admin* user using the following command:
+
+  <pre>
 	D:\appsvr\jboss-as-7.1.1.Final\bin>add-user
 	
 	What type of user do you wish to add?
@@ -111,8 +116,11 @@ two users:
 	Added user 'admin' with roles ROLE_ADMINISTRATOR to file 'D:\appsvr\jboss-as-7.1
 	.1.Final\domain\configuration\application-roles.properties'
 	Press any key to continue . . .
-	</pre>
-	<pre>
+  </pre>
+
+  Add *test* user using the following command:
+
+  <pre>
 	D:\appsvr\jboss-as-7.1.1.Final\bin>add-user
 	
 	What type of user do you wish to add?
@@ -138,94 +146,100 @@ two users:
 	Added user 'test' with roles ROLE_VIEWER to file 'D:\appsvr\jboss-as-7.1.1.Final
 	\domain\configuration\application-roles.properties'
 	Press any key to continue . . .
-	</pre>
+  </pre>
+	
+2. Specify the security domain in *jboss-web.xml*.
+	
+  <pre>	
+  &lt;security-domain>other&lt;/security-domain>
+  </pre>
+	
+  There is a post I asked a question for this in the JBoss forum will help this topic. [http://community.jboss.org/message/643007#643007](http://community.jboss.org/message/643007#643007)
 
+#### Configuration using Database login-module code.
 	
-  2. Specify the security domain in *jboss-web.xml*.
+The User/Roles related data are stored in the database, this can be configured in the JBoss AS easily. Follow the following steps to configure.
 	
-	 `	<security-domain>other</security-domain>`
-	
-	   There is a post I asked a question for this in the JBoss forum will help this topic.
-	
-	  [http://community.jboss.org/message/643007#643007](http://community.jboss.org/message/643007#643007)
-	
-* Configuration using Database login-module code.
-	
-  The User/Roles related data are stored in the database, this can be configured in the JBoss AS easily. Follow the following steps to configure.
-	
-  1. Create database *signup*(I used mysql), and grant all privileges to *signupuser/signuppass* .
+1. Create database *signup*(I used mysql), and grant all privileges to *signupuser/signuppass* .
   
-  2. Create a datasource in *${JBOSS_HOME}/standlone/configuration/standalone.xml* .
+2. Create a datasource in *${JBOSS_HOME}/standlone/configuration/standalone.xml* .
 	 	
-     Find *&lt;subsystem xmlns="urn:jboss:domain:datasources:1.0">* tag, add a new datasource.
+   Find *&lt;subsystem xmlns="urn:jboss:domain:datasources:1.0">* tag, add a new datasource.
 	 
-     <pre>
-     	<datasource jndi-name="java:jboss/datasources/signupDS" 
+  <pre>
+     	&lt;datasource jndi-name="java:jboss/datasources/signupDS" 
+
+
                                 pool-name="signupPool" 
                                 enabled="true" 
                                 jta="true" 
                                 use-java-context="true" 
                                 use-ccm="true">
-	                    <connection-url>
+	                    &lt;connection-url>
 	                        jdbc:mysql://localhost:3306/signup
-	                    </connection-url>
-	                    <driver-class>
+	                    &lt;/connection-url>
+	                    &lt;driver-class>
 	                        com.mysql.jdbc.Driver
-	                    </driver-class>
-	                    <driver>
+	                    &lt;/driver-class>
+	                    &lt;driver>
 	                        mysql-connector-java.jar
-	                    </driver>
-	                    <pool>
-	                        <min-pool-size>
+	                    &lt;/driver>
+	                    &lt;pool>
+	                        &lt;min-pool-size>
 	                            20
-	                        </min-pool-size>
-	                        <max-pool-size>
+	                        &lt;/min-pool-size>
+	                        &lt;max-pool-size>
 	                            100
-	                        </max-pool-size>
-	                        <prefill>
+	                        &lt;/max-pool-size>
+	                        &lt;prefill>
 	                            false
-	                        </prefill>
-	                        <use-strict-min>
+	                        &lt;/prefill>
+	                        &lt;use-strict-min>
 	                            false
-	                        </use-strict-min>
-	                        <flush-strategy>
+	                        &lt;/use-strict-min>
+	                        &lt;flush-strategy>
 	                            FailingConnectionOnly
-	                        </flush-strategy>
-	                    </pool>
-	                    <security>
-	                        <user-name>
+	                        &lt;/flush-strategy>
+	                    &lt;/pool>
+	                    &lt;security>
+	                        &lt;user-name>
 	                            signupuser
-	                        </user-name>
-	                        <password>
+	                        &lt;/user-name>
+	                        &lt;password>
 	                            signuppass
-	                        </password>
-	                    </security>
-	         </datasource>
-        </pre>            	 
-  3. Create security configuration.
-	 	
-     Find *&lt;subsystem xmlns="urn:jboss:domain:security:1.0">* tag, add the following configuration.
+	                        &lt;/password>
+	                    &lt;/security>
+	         &lt;/datasource>	         
+  </pre>	         
+                    	 
 
-	<pre>
-                   <security-domains>
-	                <security-domain name="other">
-	                    <authentication>
-	                        <login-module code="UsersRoles" flag="required"/>
-	                    </authentication>
-	                </security-domain>
-	                <security-domain name="SignupRealm">
-	                    <authentication>
-	                        <login-module code="Database" flag="required">
-	                            <module-option name="dsJndiName" value="java:jboss/datasources/signupDS"/>
-	                            <module-option name="principalsQuery" value="select password from users where username=?"/>
-	                            <module-option name="rolesQuery" value=" select rolename, 'Roles' from user_role where username=?"/>
-	                        </login-module>
-	                    </authentication>
-	                </security-domain>
-	            </security-domains>
-    </pre>            	            
+3. Create security configuration.
+	 	
+  Find *&lt;subsystem xmlns="urn:jboss:domain:security:1.0">* tag, add the following configuration.
+
+  <pre>
+
+                   &lt;security-domains>
+	                &lt;security-domain name="other">
+	                    &lt;authentication>
+	                        &lt;login-module code="UsersRoles" flag="required"/>
+	                    &lt;/authentication>
+	                &lt;/security-domain>
+	                &lt;security-domain name="SignupRealm">
+	                    &lt;authentication>
+	                        &lt;login-module code="Database" flag="required">
+	                            &lt;module-option name="dsJndiName" value="java:jboss/datasources/signupDS"/>
+	                            &lt;module-option name="principalsQuery" value="select password from users where username=?"/>
+	                            &lt;module-option name="rolesQuery" value=" select rolename, 'Roles' from user_role where username=?"/>
+	                        &lt;/login-module>
+	                    &lt;/authentication>
+	                &lt;/security-domain>
+	            &lt;/security-domains>
+
+  </pre>                   	            
+
 	  
-  All the configuration here is for JBoss 7 AS, Glassfish provide more friendly administration console.         
+All the configuration here is for JBoss 7 AS, Glassfish provide more friendly administration console.         
 
 ### Upgrade the weld runtime in JBoss AS###
 
