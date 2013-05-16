@@ -29,14 +29,16 @@ Key techniques are used in this app.
    Download the Apache Maven from [Apache.org](http://www.apache.org). Extract the files to your local disk, set the *M2_HOME* variable and add *M2_HOME/bin* to path.
 
    Open your terminal, type `mvn -version` and press ENTER, you should see the following similar information.
-        
+    
+   <pre>
         Apache Maven 3.0.4 (r1232337; 2012-01-17 16:44:56+0800)
         Maven home: D:\build\maven
         Java version: 1.6.0_30, vendor: Sun Microsystems Inc.
         Java home: D:\jdk6\jre
         Default locale: zh_CN, platform encoding: GBK
         OS name: "windows 7", version: "6.1", arch: "x86", family: "windows"
-
+   </pre>
+   
 3. JBoss 7  Application Server
    
    Download the latest JBoss 7 AS application server from [JBoss.org](http://www.jboss.org). Extract the files into your local disk. Optionally, you can setup JBOSS_HOME environment variable, the location is the jboss folder. 
@@ -87,7 +89,7 @@ There are several approaches for storing the autentication info, UsersRoles used
   
   1. JBoss 7.1 provides command line to add application users easily. Open cmd prompt and enter the <JBOSS_HOME>/bin, run *add-user*, and follow the step to create
 two users:
-
+<pre>
 
 	D:\appsvr\jboss-as-7.1.1.Final\bin>add-user
 	
@@ -116,7 +118,9 @@ two users:
 	Added user 'admin' with roles ROLE_ADMINISTRATOR to file 'D:\appsvr\jboss-as-7.1
 	.1.Final\domain\configuration\application-roles.properties'
 	Press any key to continue . . .
-	
+</pre>
+
+<pre>
 	D:\appsvr\jboss-as-7.1.1.Final\bin>add-user
 	
 	What type of user do you wish to add?
@@ -142,12 +146,13 @@ two users:
 	Added user 'test' with roles ROLE_VIEWER to file 'D:\appsvr\jboss-as-7.1.1.Final
 	\domain\configuration\application-roles.properties'
 	Press any key to continue . . .
-
+</pre>
 
 	
   2. Specify the security domain in *jboss-web.xml*.
 	
-	 `	<security-domain>other</security-domain>`
+<pre>	&lt;security-domain>other&lt;/security-domain>
+</pre>
 	
 	   There is a post I asked a question for this in the JBoss forum will help this topic.
 	
@@ -163,7 +168,9 @@ two users:
 	 	
      Find *&lt;subsystem xmlns="urn:jboss:domain:datasources:1.0">* tag, add a new datasource.
 	 
-     	<datasource jndi-name="java:jboss/datasources/signupDS" 
+<pre> 
+
+<datasource jndi-name="java:jboss/datasources/signupDS" 
                                 pool-name="signupPool" 
                                 enabled="true" 
                                 jta="true" 
@@ -204,11 +211,14 @@ two users:
 	                        </password>
 	                    </security>
 	         </datasource>
+	         
+</pre>	         
                     	 
   3. Create security configuration.
 	 	
         Find *&lt;subsystem xmlns="urn:jboss:domain:security:1.0">* tag, add the following configuration.
 
+<pre>
                    <security-domains>
 	                <security-domain name="other">
 	                    <authentication>
@@ -225,7 +235,7 @@ two users:
 	                    </authentication>
 	                </security-domain>
 	            </security-domains>
-                    	            
+</pre>                   	            
 	  
   All the configuration here is for JBoss 7 AS, Glassfish provide more friendly administration console.         
 
