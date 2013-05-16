@@ -4,8 +4,9 @@
  */
 package org.company.notifier;
 
-import com.amazonaws.services.sns.model.PublishRequest;
 import org.company.model.SignupRequest;
+
+import com.amazonaws.services.sns.model.PublishRequest;
 
 /**
  *

@@ -17,7 +17,6 @@ import org.company.service.events.Confirmed;
 import org.company.service.events.Denied;
 import org.company.service.events.Registered;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**

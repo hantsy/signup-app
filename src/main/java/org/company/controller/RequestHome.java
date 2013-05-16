@@ -11,7 +11,6 @@ import org.company.service.SignupRequestService;
 import org.company.service.events.Approved;
 import org.company.service.events.Confirmed;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Confirm, approve, deny action.

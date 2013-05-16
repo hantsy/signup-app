@@ -1,7 +1,12 @@
 package org.company.test.service;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.Date;
+
 import javax.inject.Inject;
+
 import org.company.model.SignupRequest;
 import org.company.model.Status;
 import org.company.service.Predicate;
@@ -13,8 +18,6 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

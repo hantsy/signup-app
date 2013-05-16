@@ -1,6 +1,6 @@
-# Readme
+# Readme#
 
-## What is it?
+## What is it?##
 
 The application should process sign-up request, received as a plain form POST
 http request. The requestor will be notified by a confirmation email. The
@@ -18,7 +18,7 @@ Key techniques are used in this app.
 * JBoss Arquillian for testing.
 * Twitter Bootstrap for UI layout.
 
-## Prerequisite
+## Prerequisite##
 
 1. Oracle JDK 7
 
@@ -40,8 +40,7 @@ Key techniques are used in this app.
 3. JBoss 7  Application Server
    
    Download the latest JBoss 7 AS application server from [JBoss.org](http://www.jboss.org). Extract the files into your local disk. Optionally, you can setup JBOSS_HOME environment variable, the location is the jboss folder. 
-    
-
+   
 3. Eclipse 3.7 and JBoss Tools
 
    Download eclipse JEE bundle from [Eclipse.org](http://www.eclipse.org), and extract zip into your local disk. Start up Eclipse and follow these step to install JBoss Tools.
@@ -52,21 +51,17 @@ Key techniques are used in this app.
     4. Restart Eclipse according to the installation prompt.
 
 ## Project Setup 
-
-  
-
-
 ### Import codes into Eclipse workspace
 
-  If you have installed the JBoss tools, the M2eclipse(maven for eclipse plugin) should be installed. Follow these steps to import the exising codes into your Eclipse workspace.
+If you have installed the JBoss tools, the M2eclipse(maven for eclipse plugin) should be installed. Follow these steps to import the exising codes into your Eclipse workspace.
  
-  1. Click *"File"-> "Import"* from Eclipse main menu, open the import dialog.
-  2. Select "Existing Maven project" under the maven node.
-  3. Select the location of the project root folder.
+1. Click *"File"-> "Import"* from Eclipse main menu, open the import dialog.
+2. Select "Existing Maven project" under the maven node.
+3. Select the location of the project root folder.
 
-  If you are the first time to use Maven in your system, it will resolve and download the missing dependencies of this project. This maybe take several minutes, please keep patience.
+If you are the first time to use Maven in your system, it will resolve and download the missing dependencies of this project. This maybe take several minutes, please keep patience.
 
-  NetBeans user can open the project directly like the general NetBeans project.
+NetBeans user can open the project directly like the general NetBeans project.
 
 ### Configuration for JAAS security.
 
@@ -88,7 +83,7 @@ There are several approaches for storing the autentication info, UsersRoles used
   1. JBoss 7.1 provides command line to add application users easily. Open cmd prompt and enter the <JBOSS_HOME>/bin, run *add-user*, and follow the step to create
 two users:
 
-
+	<pre>
 	D:\appsvr\jboss-as-7.1.1.Final\bin>add-user
 	
 	What type of user do you wish to add?
@@ -116,7 +111,8 @@ two users:
 	Added user 'admin' with roles ROLE_ADMINISTRATOR to file 'D:\appsvr\jboss-as-7.1
 	.1.Final\domain\configuration\application-roles.properties'
 	Press any key to continue . . .
-	
+	</pre>
+	<pre>
 	D:\appsvr\jboss-as-7.1.1.Final\bin>add-user
 	
 	What type of user do you wish to add?
@@ -142,7 +138,7 @@ two users:
 	Added user 'test' with roles ROLE_VIEWER to file 'D:\appsvr\jboss-as-7.1.1.Final
 	\domain\configuration\application-roles.properties'
 	Press any key to continue . . .
-
+	</pre>
 
 	
   2. Specify the security domain in *jboss-web.xml*.
@@ -163,6 +159,7 @@ two users:
 	 	
      Find *&lt;subsystem xmlns="urn:jboss:domain:datasources:1.0">* tag, add a new datasource.
 	 
+     <pre>
      	<datasource jndi-name="java:jboss/datasources/signupDS" 
                                 pool-name="signupPool" 
                                 enabled="true" 
@@ -204,11 +201,12 @@ two users:
 	                        </password>
 	                    </security>
 	         </datasource>
-                    	 
+        </pre>            	 
   3. Create security configuration.
 	 	
-        Find *&lt;subsystem xmlns="urn:jboss:domain:security:1.0">* tag, add the following configuration.
+     Find *&lt;subsystem xmlns="urn:jboss:domain:security:1.0">* tag, add the following configuration.
 
+	<pre>
                    <security-domains>
 	                <security-domain name="other">
 	                    <authentication>
@@ -225,34 +223,32 @@ two users:
 	                    </authentication>
 	                </security-domain>
 	            </security-domains>
-                    	            
+    </pre>            	            
 	  
   All the configuration here is for JBoss 7 AS, Glassfish provide more friendly administration console.         
 
-### Upgrade the weld runtime in JBoss AS.
+### Upgrade the weld runtime in JBoss AS###
 
-   **This is a must for the latest Inifinispan 5.1.0.FINAL**.
+**This is a must for the latest Inifinispan 5.1.0.FINAL**.
 
-   Download the latest weld distribution archive from [Seamframework.org](http://www.seamframework.org), and unzip the archive into your local disk. Copy the *artifacts/weld/weld-core.jar* from the uncompressed folder to the JBoss modules folder *modules/org/jboss/weld/core/main*, rename it to *weld-core.1.1.5.Final.jar* , edit the *module.xml* file in the same folder and find the weld version, and update to the latest version.  	
+Download the latest weld distribution archive from [Seamframework.org](http://www.seamframework.org), and unzip the archive into your local disk. Copy the *artifacts/weld/weld-core.jar* from the uncompressed folder to the JBoss modules folder *modules/org/jboss/weld/core/main*, rename it to *weld-core.1.1.5.Final.jar* , edit the *module.xml* file in the same folder and find the weld version, and update to the latest version.  	
 
-### Run Project 
+### Run Project ###
  
- You can deploy the application into JBoss AS from IDE or command line.
+You can deploy the application into JBoss AS from IDE or command line.
 
- 1. Deploy from Eclipse IDE.
+1. Deploy from Eclipse IDE.
 
-      1. Right Click the Project Node.
+   1. Right Click the Project Node.
+   2. Select "Run as"-&gt;"Server", and choose the Jboss AS you have registered and configured.
+   3. Open your favorite browser, navigate http://localhost:8080/signup.
 
-      2. Select "Run as"-&gt;"Server", and choose the Jboss AS you have registered and configured.
-
-      3. Open your favorite browser, navigate http://localhost:8080/signup.
-
-      If you are using NetBeans, right click the Project node, select Run in the context menu, and choose the JBoss server you registered.
+  If you are using NetBeans, right click the Project node, select Run in the context menu, and choose the JBoss server you registered.
     
 
- 2. Deploy from command line.
+2. Deploy from command line.
  
-      The pom.xml included a JBoss As maven plugin configuration, open command console and switch to path of the project root folder. run `mvn clean package jboss-as:deploy` in the command window, it will clean the project folder, compile and package a fresh war archive and deploy it into the runing JBoss AS.
+   The pom.xml included a JBoss As maven plugin configuration, open command console and switch to path of the project root folder. run `mvn clean package jboss-as:deploy` in the command window, it will clean the project folder, compile and package a fresh war archive and deploy it into the runing JBoss AS.
 
 
 

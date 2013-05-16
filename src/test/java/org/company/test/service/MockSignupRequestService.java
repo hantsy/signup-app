@@ -5,10 +5,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.inject.Named;
+
 import org.company.model.SignupRequest;
 import org.company.model.Status;
 import org.company.service.Predicate;

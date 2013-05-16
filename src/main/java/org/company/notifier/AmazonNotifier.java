@@ -4,20 +4,23 @@
  */
 package org.company.notifier;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.enterprise.event.Observes;
+import javax.enterprise.inject.Alternative;
+import javax.inject.Inject;
+
+import org.company.model.SignupRequest;
+import org.company.service.Notifier;
+import org.company.service.events.Registered;
+
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.PropertiesCredentials;
 import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.AmazonSNSClient;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Alternative;
-import javax.inject.Inject;
-import org.company.model.SignupRequest;
-import org.company.service.Notifier;
-import org.company.service.events.Registered;
 
 /**
  *

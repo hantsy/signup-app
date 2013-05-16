@@ -14,7 +14,6 @@ import org.company.model.SignupRequest;
 import org.company.service.SignupRequestService;
 import org.company.service.events.Denied;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Deny a Signup request.

@@ -7,7 +7,6 @@ import javax.inject.Named;
 import org.company.model.SignupRequest;
 import org.company.service.SignupRequestService;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * View the detail of request.
